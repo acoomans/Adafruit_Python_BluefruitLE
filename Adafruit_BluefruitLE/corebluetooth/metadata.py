@@ -60,7 +60,9 @@ class CoreBluetoothMetadata(object):
         """
         try:
             with self._lock:
-                return [self._metadata[x] for x in cbobjects]
+                if cbobjects:
+                    return [self._metadata[x] for x in cbobjects]
+                return []
         except KeyError:
             # Note that if this error gets thrown then the assumption that OSX
             # will pass back to callbacks the exact CoreBluetooth objects that
@@ -74,6 +76,7 @@ class CoreBluetoothMetadata(object):
         metadata item.
         """
         with self._lock:
+
             if cbobject not in self._metadata:
                 self._metadata[cbobject] = metadata
             return self._metadata[cbobject]

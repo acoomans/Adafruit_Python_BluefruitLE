@@ -49,9 +49,11 @@ def main():
         # Make sure scanning is stopped before exiting.
         adapter.stop_scan()
 
-    print('Connecting to device...')
+    print('Connecting to device...', device.name)
     device.connect()  # Will time out after 60 seconds, specify timeout_sec parameter
                       # to change the timeout.
+                      
+    
 
     # Once connected do everything else in a try/finally to make sure the device
     # is disconnected when done.
@@ -60,24 +62,107 @@ def main():
         # time out after 60 seconds (specify timeout_sec parameter to override).
         print('Discovering services...')
         DeviceInformation.discover(device)
+        
+        
+        s_start = 'S01'
+        s_stop = 'S00'
+        
+        
+        s_unkn1 = 'DR0401'
+        s_unkn2 = 'DW0308'
+        
+        
 
-        # Once service discovery is complete create an instance of the service
-        # and start interacting with it.
-        dis = DeviceInformation(device)
+        
+        
+        import uuid
+        
+        u = uuid.UUID('00002902-0000-1000-8000-00805f9b34fb')
+        
+        d = uuid.UUID('00002902-0000-1000-8000-00805f9b34fb')
+        e = uuid.UUID('6e400001-b5a3-f393-e0a9-e50e24dcca9e')
+        f = uuid.UUID('6e400002-b5a3-f393-e0a9-e50e24dcca9e')
+        g = uuid.UUID('6e400003-b5a3-f393-e0a9-e50e24dcca9e')
+        
+        
+        
+        def val_change_cb(val):
+            print("val_change_cb:", val)
+        
+        s = device.list_services()[0]
+        print("service:", s.uuid)
+        
+        gg = s.find_characteristic(g)
+        print("find characteristic:", gg, "for g:", g)
+        dd = gg.find_descriptor(d)
+        print("find descriptor:", dd, "for d:", d)
+        # gg.start_notify(val_change_cb)
+        # dd.start_notify(val_change_cb)
+        
+        ff = s.find_characteristic(f)
+        print("find characteristic:", ff, "for f:", f)
+        dr = 'S01'.encode(encoding='UTF-8')
+        ff.write_value(dr)
+        print("sent dr:", dr, "to f:", f)
+        
+        
+        print("gg value:", gg.read_value())
+        
+        
+        # 
+        # characteristics = s.list_characteristics()
+        # for characteristic in characteristics:
+        #     
+        #     print("charact:", characteristic.uuid)
+        #     desc = characteristic.list_descriptors()
+        #     characteristic.write_value(str(s.uuid))
+        #     characteristic.start_notify(f)
+        #     print(desc)
+        #     for d in desc:
+        #         print("desc:", d.uuid)
+        #         
+        #     #print(characteristic.find_descriptor(u))
+        #     
+        #     #print("list desc:")
+        #     #print(characteristic.list_descriptors())
+        #     
+        #     # print(characteristic.read_value())
+        #     dr = 'DR0401'.encode(encoding='UTF-8')
+        #     characteristic.write_value(dr)
+        #     
+        #     
 
-        # Print out the DIS characteristics.
-        print('Manufacturer: {0}'.format(dis.manufacturer))
-        print('Model: {0}'.format(dis.model))
-        print('Serial: {0}'.format(dis.serial))
-        print('Hardware Revision: {0}'.format(dis.hw_revision))
-        print('Software Revision: {0}'.format(dis.sw_revision))
-        print('Firmware Revision: {0}'.format(dis.fw_revision))
-        print('System ID: {0}'.format(dis.system_id))
-        print('Regulatory Cert: {0}'.format(dis.regulatory_cert))
-        print('PnP ID: {0}'.format(dis.pnp_id))
+
+
+        
+        # 
+        # # import time
+        # # print('Waiting 60 seconds to receive data from the device...')
+        # # time.sleep(60)
+        # import time
+        # while True:
+        #     
+        #     # print('Waiting 60 seconds to receive data from the device...')
+        #     time.sleep(5)
+        #     
+        #     
+            
+        
+        raw_input("Press any key to quit...")
+        
+    except IOError as (errno, strerror):
+        print "I/O error({0}): {1}".format(errno, strerror)
+    except ValueError:
+        print "Could not convert data to an integer."
+    except:
+        import sys
+        print "Unexpected error:", sys.exc_info()[0]
+        raise
+    
     finally:
+        pass
         # Make sure device is disconnected on exit.
-        device.disconnect()
+        # device.disconnect()
 
 
 # Initialize the BLE system.  MUST be called before other BLE calls!

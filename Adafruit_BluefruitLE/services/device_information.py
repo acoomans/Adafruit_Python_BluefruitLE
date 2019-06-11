@@ -55,15 +55,25 @@ class DeviceInformation(ServiceBase):
         """Initialize device information from provided bluez device."""
         # Find the DIS service and characteristics associated with the device.
         self._dis = device.find_service(DIS_SERVICE_UUID)
-        self._manufacturer = self._dis.find_characteristic(MANUFACTURER_CHAR_UUID)
-        self._model = self._dis.find_characteristic(MODEL_CHAR_UUID)
-        self._serial = self._dis.find_characteristic(SERIAL_CHAR_UUID)
-        self._hw_revision = self._dis.find_characteristic(HW_REVISION_CHAR_UUID)
-        self._sw_revision = self._dis.find_characteristic(SW_REVISION_CHAR_UUID)
-        self._fw_revision = self._dis.find_characteristic(FW_REVISION_CHAR_UUID)
-        self._sys_id = self._dis.find_characteristic(SYS_ID_CHAR_UUID)
-        self._reg_cert = self._dis.find_characteristic(REG_CERT_CHAR_UUID)
-        self._pnp_id = self._dis.find_characteristic(PNP_ID_CHAR_UUID)
+        self._manufacturer = "*_manufacturer"
+        self._model = "*_model"
+        self._serial = "*_serial"
+        self._hw_revision = "*_hw_revision"
+        self._sw_revision = "*_sw_revision"
+        self._fw_revision = "*_fw_revision"
+        self._sys_id = "*_sys_id"
+        self._reg_cert = "*_reg_cert"
+        self._pnp_id = "*_pnp_id"
+        
+        # self._manufacturer = self._dis.find_characteristic(MANUFACTURER_CHAR_UUID)
+        # self._model = self._dis.find_characteristic(MODEL_CHAR_UUID)
+        # self._serial = self._dis.find_characteristic(SERIAL_CHAR_UUID)
+        # self._hw_revision = self._dis.find_characteristic(HW_REVISION_CHAR_UUID)
+        # self._sw_revision = self._dis.find_characteristic(SW_REVISION_CHAR_UUID)
+        # self._fw_revision = self._dis.find_characteristic(FW_REVISION_CHAR_UUID)
+        # self._sys_id = self._dis.find_characteristic(SYS_ID_CHAR_UUID)
+        # self._reg_cert = self._dis.find_characteristic(REG_CERT_CHAR_UUID)
+        # self._pnp_id = self._dis.find_characteristic(PNP_ID_CHAR_UUID)
 
     # Expose all the DIS properties as easy to read python object properties.
     @property
